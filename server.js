@@ -1,6 +1,8 @@
 const express = require('express')
 const connectDB = require('./middleware/db.config')
 const user = require('./routes/userRoutes')
+const transaction = require('./routes/transactionRoutes')
+const errorHandler = require('./middleware/errorHandler')
 
 
 const port = process.env.PORT || 3000
@@ -10,10 +12,12 @@ connectDB()
 
 // middleware
 app.use(express.json())
+app.use(errorHandler)
 
 
 // Routes
 app.use('/api', user)
+app.use('/api', transaction)
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`)

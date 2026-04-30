@@ -4,7 +4,7 @@ const genToken = require('../utility/generateToken')
 
 
 // Register
-const registerUser = async (req, res) => {
+const registerUser = async (req, res, next) => {
     try {
         const { name, mail, password, confirmPassword } = req.body 
         if(password != confirmPassword) return res.status(400).json({
@@ -33,16 +33,12 @@ const registerUser = async (req, res) => {
             }
         })
     } catch (err) {
-        res.status(500).json({
-            success: false,
-            message: "Internal server error.",
-            error: err.message
-        })
+        next(err)
     }
 }
 
 // Login
-const loginUser = async (req, res) => {
+const loginUser = async (req, res, next) => {
     try {
         const { mail, password } = req.body 
         const user = await User.findOne({ mail })
@@ -72,11 +68,7 @@ const loginUser = async (req, res) => {
             }
         })
     } catch (err) {
-        res.status(500).json({
-            success: false,
-            message: "Internal server error",
-            error: err.message
-        })
+        next(err)
     }
 }
 
